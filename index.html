@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Klik en Stuur</title>
+  <meta name="description" content="Website voor Klik en Stuur" />
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --accent-dark: #1d4ed8;
+      --border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #eff6ff 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    header {
+      padding: 72px 0 40px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: 3rem;
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      margin: 0 auto;
+      max-width: 640px;
+      font-size: 1.125rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .actions {
+      margin-top: 32px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 14px 22px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.2s ease;
+    }
+
+    .button-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: var(--accent-dark);
+    }
+
+    .button-secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .button-secondary:hover {
+      border-color: #cbd5e1;
+      background: #f8fafc;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin: 48px 0 72px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.25rem;
+    }
+
+    .card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    footer {
+      padding: 24px 0 48px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Klik en Stuur</h1>
+      <p class="subtitle">
+        Welkom op de homepage van Klik en Stuur. Hier kun je eenvoudig informatie delen,
+        jouw dienst presenteren en bezoekers uitnodigen om contact op te nemen.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="#meer">Meer informatie</a>
+        <a class="button button-secondary" href="https://github.com/mmlzegwaard/klikenstuurop">Bekijk de repository</a>
+      </div>
+    </header>
+
+    <main>
+      <section id="meer" class="grid">
+        <article class="card">
+          <h2>Snel</h2>
+          <p>Een eenvoudige en duidelijke homepage die snel laadt op elk apparaat.</p>
+        </article>
+        <article class="card">
+          <h2>Modern</h2>
+          <p>Een frisse uitstraling met een nette opmaak voor desktop en mobiel.</p>
+        </article>
+        <article class="card">
+          <h2>Klaar voor uitbreiding</h2>
+          <p>Deze pagina is een basis die later makkelijk uitgebreid kan worden met extra onderdelen.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      © 2026 Klik en Stuur
+    </footer>
+  </div>
+</body>
+</html>
