@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Winkelwagen — Klik &amp; Stuurop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">Klik &amp; <span>Stuurop</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Collectie</a></li>
+        <li><a href="cart.html" class="active">Winkelwagen</a></li>
+        <li><a href="checkout.html">Afrekenen</a></li>
+      </ul>
+      <a href="cart.html" class="nav-cart" aria-label="Winkelwagen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span id="cart-badge" class="badge" hidden>0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <h1>Winkelwagen</h1>
+    </div>
+    <div id="cart-root"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 Klik &amp; Stuurop — Woonwinkel</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>initCart();</script>
+</body>
+</html>
