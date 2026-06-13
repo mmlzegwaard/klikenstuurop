@@ -307,7 +307,7 @@
     const errorMessage = document.getElementById("uploadError");
     let uploadedPhotoUrl = "";
 
-    function clearUploadedPhotoUrl() {
+    function cleanupUploadedPhoto() {
       if (uploadedPhotoUrl) {
         URL.revokeObjectURL(uploadedPhotoUrl);
       }
@@ -331,14 +331,18 @@
       errorMessage.hidden = false;
     }
 
-    function setDefaultPhoto() {
-      clearUploadedPhotoUrl();
-      fileInput.value = "";
+    function applyDefaultState() {
       clearError();
       updatePhotoTargets(defaultPhotoSrc);
       status.textContent = "Standaardfoto actief";
       status.className = "status status-default";
       statusText.textContent = "Producten gebruiken momenteel de standaardfoto als bron.";
+    }
+
+    function setDefaultPhoto() {
+      cleanupUploadedPhoto();
+      fileInput.value = "";
+      applyDefaultState();
     }
 
     fileInput.addEventListener("change", () => {
@@ -355,7 +359,7 @@
       }
 
       clearError();
-      clearUploadedPhotoUrl();
+      cleanupUploadedPhoto();
       uploadedPhotoUrl = URL.createObjectURL(file);
       updatePhotoTargets(uploadedPhotoUrl);
       status.textContent = "Eigen foto actief";
@@ -364,7 +368,7 @@
     });
 
     removeButton.addEventListener("click", setDefaultPhoto);
-    setDefaultPhoto();
+    applyDefaultState();
   </script>
 </body>
 </html>
