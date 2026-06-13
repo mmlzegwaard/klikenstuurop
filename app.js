@@ -142,8 +142,8 @@ function cartCount() {
   return getCart().reduce((sum, item) => sum + item.qty, 0);
 }
 
-function formatPrice(cents) {
-  return '€\u202f' + cents.toLocaleString('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function formatPrice(amount) {
+  return '€\u202f' + amount.toLocaleString('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 // ─── Navigation badge ────────────────────────────────────────────────────────
