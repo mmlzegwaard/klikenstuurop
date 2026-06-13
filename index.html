@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Klik &amp; Stuurop — Woonwinkel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">Klik &amp; <span>Stuurop</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Collectie</a></li>
+        <li><a href="cart.html">Winkelwagen</a></li>
+        <li><a href="checkout.html">Afrekenen</a></li>
+      </ul>
+      <a href="cart.html" class="nav-cart" aria-label="Winkelwagen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span id="cart-badge" class="badge" hidden>0</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <img
+      class="hero-img"
+      src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1400&q=80"
+      alt="Moderne woonkamer interieur"
+    />
+    <div class="hero-overlay">
+      <div class="hero-content">
+        <h1>Woon&shy;inspiratie direct aan huis</h1>
+        <p>Ontdek tijdloos interieur&shy;design — van bank tot schilderij. Kies, klik en wij sturen op.</p>
+        <a href="#collectie" class="btn btn-primary">Bekijk collectie</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <main class="container">
+    <div class="section-heading" id="collectie">
+      <h2>Onze collectie</h2>
+      <p>Alles wat je woonkamer nodig heeft, rechtstreeks uit de foto</p>
+    </div>
+    <div class="products-grid" id="products-grid"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 Klik &amp; Stuurop — Woonwinkel</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>initHome();</script>
+</body>
+</html>

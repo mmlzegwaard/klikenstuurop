@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Afrekenen — Klik &amp; Stuurop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">Klik &amp; <span>Stuurop</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Collectie</a></li>
+        <li><a href="cart.html">Winkelwagen</a></li>
+        <li><a href="checkout.html" class="active">Afrekenen</a></li>
+      </ul>
+      <a href="cart.html" class="nav-cart" aria-label="Winkelwagen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span id="cart-badge" class="badge" hidden>0</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 id="checkout-heading">Afrekenen</h1>
+    </div>
+
+    <!-- Success message (hidden until form is submitted) -->
+    <div id="checkout-success" class="checkout-success" hidden>
+      <div class="success-icon">🎉</div>
+      <h2>Bestelling geplaatst!</h2>
+      <p>
+        Bedankt voor je bestelling. Je ontvangt een bevestiging per e-mail.
+        We sturen je bestelling zo snel mogelijk op.
+      </p>
+      <a href="index.html" class="btn btn-primary">Terug naar de winkel</a>
+    </div>
+
+    <div class="checkout-layout" id="checkout-layout">
+      <!-- Shipping form -->
+      <div class="checkout-form-card">
+        <h2>Verzendgegevens</h2>
+        <form id="checkout-form">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="voornaam">Voornaam</label>
+              <input type="text" id="voornaam" name="voornaam" placeholder="Jan" required />
+            </div>
+            <div class="form-group">
+              <label for="achternaam">Achternaam</label>
+              <input type="text" id="achternaam" name="achternaam" placeholder="de Vries" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mailadres</label>
+            <input type="email" id="email" name="email" placeholder="jan@voorbeeld.nl" required />
+          </div>
+
+          <div class="form-group">
+            <label for="adres">Straat en huisnummer</label>
+            <input type="text" id="adres" name="adres" placeholder="Voorbeeldstraat 12" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="postcode">Postcode</label>
+              <input type="text" id="postcode" name="postcode" placeholder="1234 AB" required />
+            </div>
+            <div class="form-group">
+              <label for="stad">Woonplaats</label>
+              <input type="text" id="stad" name="stad" placeholder="Amsterdam" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="land">Land</label>
+            <select id="land" name="land" required>
+              <option value="NL" selected>Nederland</option>
+              <option value="BE">België</option>
+              <option value="DE">Duitsland</option>
+              <option value="FR">Frankrijk</option>
+              <option value="LU">Luxemburg</option>
+              <option value="GB">Verenigd Koninkrijk</option>
+              <option value="OTHER">Overig</option>
+            </select>
+          </div>
+
+          <div class="checkout-submit-row">
+            <button type="submit" class="btn btn-primary btn-large">
+              Bestelling bevestigen →
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Order summary -->
+      <aside class="order-summary-card">
+        <h2>Overzicht</h2>
+        <div id="order-summary"></div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Klik &amp; Stuurop — Woonwinkel</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>initCheckout();</script>
+</body>
+</html>
