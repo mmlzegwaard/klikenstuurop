@@ -266,7 +266,7 @@
           <img
             id="activePhoto"
             class="preview-image"
-            src=""
+            src="default-room.svg"
             alt="Actieve interieurfoto voor productpreview"
           />
         </article>
@@ -274,17 +274,17 @@
 
       <section id="producten" class="product-list" aria-label="Producten">
         <article class="card">
-          <img class="product-thumb product-photo" src="" alt="Preview voor Fauteuil Riva" />
+          <img class="product-thumb product-photo" src="default-room.svg" alt="Preview voor Fauteuil Riva" />
           <h2>Fauteuil Riva</h2>
           <p>Comfortabele fauteuil met zachte stof en warme uitstraling.</p>
         </article>
         <article class="card">
-          <img class="product-thumb product-photo" src="" alt="Preview voor Vloerkleed Solis" />
+          <img class="product-thumb product-photo" src="default-room.svg" alt="Preview voor Vloerkleed Solis" />
           <h2>Vloerkleed Solis</h2>
           <p>Hoogpolig vloerkleed dat rust en warmte toevoegt aan je zithoek.</p>
         </article>
         <article class="card">
-          <img class="product-thumb product-photo" src="" alt="Preview voor Lamp Nord" />
+          <img class="product-thumb product-photo" src="default-room.svg" alt="Preview voor Lamp Nord" />
           <h2>Lamp Nord</h2>
           <p>Minimalistische tafellamp met sfeervol, gericht licht.</p>
         </article>
@@ -297,8 +297,7 @@
   </div>
 
   <script>
-    const defaultPhotoSvg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 700'><defs><linearGradient id='g1' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#dbeafe'/><stop offset='100%' stop-color='#bfdbfe'/></linearGradient></defs><rect width='1200' height='700' fill='url(#g1)'/><rect x='120' y='180' width='640' height='360' rx='24' fill='#f8fafc' stroke='#cbd5e1'/><rect x='820' y='220' width='220' height='280' rx='20' fill='#e2e8f0'/><circle cx='280' cy='360' r='84' fill='#93c5fd'/><rect x='380' y='300' width='300' height='160' rx='16' fill='#60a5fa'/><rect x='880' y='520' width='180' height='20' rx='10' fill='#94a3b8'/><text x='120' y='120' font-family='Arial,sans-serif' font-size='42' fill='#1e3a8a'>Standaard interieurfoto</text></svg>";
-    const defaultPhotoSrc = `data:image/svg+xml;utf8,${encodeURIComponent(defaultPhotoSvg)}`;
+    const defaultPhotoSrc = "default-room.svg";
     const fileInput = document.getElementById("photoUpload");
     const removeButton = document.getElementById("removePhoto");
     const activePhoto = document.getElementById("activePhoto");
@@ -307,6 +306,13 @@
     const statusText = document.getElementById("activePhotoText");
     const errorMessage = document.getElementById("uploadError");
     let uploadedPhotoUrl = "";
+
+    function clearUploadedPhotoUrl() {
+      if (uploadedPhotoUrl) {
+        URL.revokeObjectURL(uploadedPhotoUrl);
+      }
+      uploadedPhotoUrl = "";
+    }
 
     function updatePhotoTargets(source) {
       activePhoto.src = source;
@@ -326,10 +332,7 @@
     }
 
     function setDefaultPhoto() {
-      if (uploadedPhotoUrl) {
-        URL.revokeObjectURL(uploadedPhotoUrl);
-      }
-      uploadedPhotoUrl = "";
+      clearUploadedPhotoUrl();
       fileInput.value = "";
       clearError();
       updatePhotoTargets(defaultPhotoSrc);
@@ -352,9 +355,7 @@
       }
 
       clearError();
-      if (uploadedPhotoUrl) {
-        URL.revokeObjectURL(uploadedPhotoUrl);
-      }
+      clearUploadedPhotoUrl();
       uploadedPhotoUrl = URL.createObjectURL(file);
       updatePhotoTargets(uploadedPhotoUrl);
       status.textContent = "Eigen foto actief";

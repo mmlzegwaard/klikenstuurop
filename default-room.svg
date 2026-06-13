@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Standaard interieurfoto">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dbeafe" />
+      <stop offset="100%" stop-color="#bfdbfe" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg)" />
+  <text x="120" y="120" font-family="Arial, sans-serif" font-size="42" fill="#1e3a8a">
+    Standaard interieurfoto
+  </text>
+  <rect x="120" y="180" width="640" height="360" rx="24" fill="#f8fafc" stroke="#cbd5e1" />
+  <rect x="820" y="220" width="220" height="280" rx="20" fill="#e2e8f0" />
+  <circle cx="280" cy="360" r="84" fill="#93c5fd" />
+  <rect x="380" y="300" width="300" height="160" rx="16" fill="#60a5fa" />
+  <rect x="880" y="520" width="180" height="20" rx="10" fill="#94a3b8" />
+</svg>
