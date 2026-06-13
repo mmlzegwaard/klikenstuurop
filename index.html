@@ -115,6 +115,101 @@
       line-height: 1.6;
     }
 
+    .photo-panel {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .upload-box {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      background: #f8fafc;
+    }
+
+    .upload-box h2 {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+    }
+
+    .upload-box p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      background: #fff;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    .status-custom {
+      color: #047857;
+    }
+
+    .status-default {
+      color: var(--muted);
+    }
+
+    .error {
+      margin-top: 10px;
+      color: #b91c1c;
+      font-weight: bold;
+    }
+
+    .preview-image {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      max-height: 420px;
+      background: #fff;
+    }
+
+    .product-list {
+      margin: 32px 0 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .product-thumb {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      height: 120px;
+      margin-bottom: 12px;
+      background: #fff;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .button-reset {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .button-reset:hover {
+      background: #f3f4f6;
+    }
+
     footer {
       padding: 24px 0 48px;
       text-align: center;
@@ -128,28 +223,70 @@
     <header>
       <h1>Klik en Stuur</h1>
       <p class="subtitle">
-        Welkom op de homepage van Klik en Stuur. Hier kun je eenvoudig informatie delen,
-        jouw dienst presenteren en bezoekers uitnodigen om contact op te nemen.
+        Kies een interieurfoto en bekijk direct hoe producten op basis van jouw eigen beeld worden getoond.
       </p>
       <div class="actions">
-        <a class="button button-primary" href="#meer">Meer informatie</a>
-        <a class="button button-secondary" href="https://github.com/mmlzegwaard/klikenstuurop">Bekijk de repository</a>
+        <a class="button button-primary" href="#upload">Foto uploaden</a>
+        <a class="button button-secondary" href="#producten">Bekijk producten</a>
       </div>
     </header>
 
     <main>
       <section id="meer" class="grid">
         <article class="card">
-          <h2>Snel</h2>
-          <p>Een eenvoudige en duidelijke homepage die snel laadt op elk apparaat.</p>
+          <h2>Upload je eigen foto</h2>
+          <p>Kies eenvoudig een eigen afbeelding en gebruik deze direct in de webshop-preview.</p>
         </article>
         <article class="card">
-          <h2>Modern</h2>
-          <p>Een frisse uitstraling met een nette opmaak voor desktop en mobiel.</p>
+          <h2>Direct zichtbaar</h2>
+          <p>Je geüploade foto wordt meteen getoond, zodat je snel kunt beoordelen wat het effect is.</p>
         </article>
         <article class="card">
-          <h2>Klaar voor uitbreiding</h2>
-          <p>Deze pagina is een basis die later makkelijk uitgebreid kan worden met extra onderdelen.</p>
+          <h2>Makkelijk vervangen</h2>
+          <p>Niet tevreden? Verwijder de foto of kies direct een nieuw bestand.</p>
+        </article>
+      </section>
+
+      <section class="photo-panel">
+        <article id="upload" class="upload-box">
+          <h2>Upload jouw interieurfoto</h2>
+          <p>Gebruik een JPG, PNG, GIF of WebP bestand. Alleen afbeeldingsbestanden zijn toegestaan.</p>
+          <label for="photoUpload"><strong>Kies bestand</strong></label>
+          <input id="photoUpload" type="file" accept="image/*" />
+          <p id="uploadStatus" class="status status-default">Standaardfoto actief</p>
+          <p id="uploadError" class="error" role="alert" hidden></p>
+          <div class="button-row">
+            <button id="removePhoto" class="button button-reset" type="button">Verwijder eigen foto</button>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Actieve fotobron</h2>
+          <p id="activePhotoText">Producten gebruiken momenteel de standaardfoto als bron.</p>
+          <img
+            id="activePhoto"
+            class="preview-image"
+            src=""
+            alt="Actieve interieurfoto voor productpreview"
+          />
+        </article>
+      </section>
+
+      <section id="producten" class="product-list" aria-label="Producten">
+        <article class="card">
+          <img class="product-thumb product-photo" src="" alt="Preview voor Fauteuil Riva" />
+          <h2>Fauteuil Riva</h2>
+          <p>Comfortabele fauteuil met zachte stof en warme uitstraling.</p>
+        </article>
+        <article class="card">
+          <img class="product-thumb product-photo" src="" alt="Preview voor Vloerkleed Solis" />
+          <h2>Vloerkleed Solis</h2>
+          <p>Hoogpolig vloerkleed dat rust en warmte toevoegt aan je zithoek.</p>
+        </article>
+        <article class="card">
+          <img class="product-thumb product-photo" src="" alt="Preview voor Lamp Nord" />
+          <h2>Lamp Nord</h2>
+          <p>Minimalistische tafellamp met sfeervol, gericht licht.</p>
         </article>
       </section>
     </main>
@@ -158,5 +295,75 @@
       © 2026 Klik en Stuur
     </footer>
   </div>
+
+  <script>
+    const defaultPhotoSvg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 700'><defs><linearGradient id='g1' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#dbeafe'/><stop offset='100%' stop-color='#bfdbfe'/></linearGradient></defs><rect width='1200' height='700' fill='url(#g1)'/><rect x='120' y='180' width='640' height='360' rx='24' fill='#f8fafc' stroke='#cbd5e1'/><rect x='820' y='220' width='220' height='280' rx='20' fill='#e2e8f0'/><circle cx='280' cy='360' r='84' fill='#93c5fd'/><rect x='380' y='300' width='300' height='160' rx='16' fill='#60a5fa'/><rect x='880' y='520' width='180' height='20' rx='10' fill='#94a3b8'/><text x='120' y='120' font-family='Arial,sans-serif' font-size='42' fill='#1e3a8a'>Standaard interieurfoto</text></svg>";
+    const defaultPhotoSrc = `data:image/svg+xml;utf8,${encodeURIComponent(defaultPhotoSvg)}`;
+    const fileInput = document.getElementById("photoUpload");
+    const removeButton = document.getElementById("removePhoto");
+    const activePhoto = document.getElementById("activePhoto");
+    const productPhotos = document.querySelectorAll(".product-photo");
+    const status = document.getElementById("uploadStatus");
+    const statusText = document.getElementById("activePhotoText");
+    const errorMessage = document.getElementById("uploadError");
+    let uploadedPhotoUrl = "";
+
+    function updatePhotoTargets(source) {
+      activePhoto.src = source;
+      productPhotos.forEach((image) => {
+        image.src = source;
+      });
+    }
+
+    function clearError() {
+      errorMessage.textContent = "";
+      errorMessage.hidden = true;
+    }
+
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.hidden = false;
+    }
+
+    function setDefaultPhoto() {
+      if (uploadedPhotoUrl) {
+        URL.revokeObjectURL(uploadedPhotoUrl);
+      }
+      uploadedPhotoUrl = "";
+      fileInput.value = "";
+      clearError();
+      updatePhotoTargets(defaultPhotoSrc);
+      status.textContent = "Standaardfoto actief";
+      status.className = "status status-default";
+      statusText.textContent = "Producten gebruiken momenteel de standaardfoto als bron.";
+    }
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files && fileInput.files[0];
+
+      if (!file) {
+        return;
+      }
+
+      if (!file.type || !file.type.startsWith("image/")) {
+        fileInput.value = "";
+        showError("Ongeldig bestand. Kies een afbeelding (bijvoorbeeld JPG, PNG, GIF of WebP).");
+        return;
+      }
+
+      clearError();
+      if (uploadedPhotoUrl) {
+        URL.revokeObjectURL(uploadedPhotoUrl);
+      }
+      uploadedPhotoUrl = URL.createObjectURL(file);
+      updatePhotoTargets(uploadedPhotoUrl);
+      status.textContent = "Eigen foto actief";
+      status.className = "status status-custom";
+      statusText.textContent = "Producten gebruiken jouw geüploade foto als bron.";
+    });
+
+    removeButton.addEventListener("click", setDefaultPhoto);
+    setDefaultPhoto();
+  </script>
 </body>
 </html>
