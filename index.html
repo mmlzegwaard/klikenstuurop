@@ -231,7 +231,7 @@
         let payload = {};
         try {
           payload = await response.json();
-        } catch (_error) {
+        } catch {
           payload = {};
         }
         if (!response.ok) {

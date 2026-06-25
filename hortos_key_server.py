@@ -10,6 +10,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent
 CREDENTIALS_FILE = REPO_ROOT / "hortos_credentials.json"
+MIN_TIMEOUT_SECONDS = 1.0
+MAX_TIMEOUT_SECONDS = 30.0
 
 
 def read_json_body(response):
@@ -48,7 +50,7 @@ def fetch_api_key(credentials):
     auth_url = urllib.parse.urljoin(f"{base_url}/", credentials["auth_endpoint"].lstrip("/"))
     key_url = urllib.parse.urljoin(f"{base_url}/", credentials["key_endpoint"].lstrip("/"))
     timeout_seconds = float(credentials.get("timeout_seconds", 10))
-    timeout_seconds = max(1.0, min(timeout_seconds, 30.0))
+    timeout_seconds = max(MIN_TIMEOUT_SECONDS, min(timeout_seconds, MAX_TIMEOUT_SECONDS))
 
     auth_payload = {
         "username": credentials["username"],
@@ -109,7 +111,7 @@ class Handler(SimpleHTTPRequestHandler):
         except urllib.error.URLError as exc:
             return json_response(
                 self,
-                {"error": "Verbinding met hortos.ridder.com mislukt.", "details": str(exc.reason)},
+                {"error": "Verbinding met de ingestelde Hortos server mislukt.", "details": str(exc.reason)},
                 status=502,
             )
         except Exception as exc:
