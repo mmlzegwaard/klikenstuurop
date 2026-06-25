@@ -105,13 +105,13 @@ class Handler(SimpleHTTPRequestHandler):
         except urllib.error.HTTPError as exc:
             return json_response(
                 self,
-                {"error": f"Hortos request mislukt ({exc.code})."},
+                {"error": f"Hortos request mislukt bij authenticatie of key ophalen ({exc.code})."},
                 status=502,
             )
         except urllib.error.URLError as exc:
             return json_response(
                 self,
-                {"error": "Verbinding met de ingestelde Hortos server mislukt.", "details": str(exc.reason)},
+                {"error": "Kan geen verbinding maken met Hortos server.", "details": str(exc.reason)},
                 status=502,
             )
         except Exception as exc:
