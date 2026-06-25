@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import argparse
 import json
 import urllib.error
 import urllib.parse
@@ -9,6 +10,13 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent
 CREDENTIALS_FILE = REPO_ROOT / "hortos_credentials.json"
+
+
+def read_json_body(response):
+    raw = response.read()
+    if not raw:
+        return {}
+    return json.loads(raw.decode("utf-8"))
 
 
 def json_response(handler, payload, status=200):
@@ -52,7 +60,7 @@ def fetch_api_key(credentials):
     )
 
     with urllib.request.urlopen(auth_request, timeout=20) as response:
-        auth_data = json.loads(response.read().decode("utf-8") or "{}")
+        auth_data = read_json_body(response)
 
     token_field = credentials.get("access_token_field", "access_token")
     token = auth_data.get(token_field) or auth_data.get("token")
@@ -67,7 +75,7 @@ def fetch_api_key(credentials):
         method="GET",
     )
     with urllib.request.urlopen(key_request, timeout=20) as response:
-        key_data = json.loads(response.read().decode("utf-8") or "{}")
+        key_data = read_json_body(response)
 
     api_key_field = credentials.get("api_key_field", "api_key")
     api_key = key_data.get(api_key_field) or key_data.get("key")
@@ -108,9 +116,14 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 def main():
-    server = ThreadingHTTPServer(("127.0.0.1", 8000), Handler)
-    print("Server gestart op http://127.0.0.1:8000")
-    print("Open: http://127.0.0.1:8000/index.html")
+    parser = argparse.ArgumentParser(description="Lokale server voor Hortos API key ophalen.")
+    parser.add_argument("--host", default="127.0.0.1", help="Luisterhost voor de lokale server.")
+    parser.add_argument("--port", type=int, default=8000, help="Luisterpoort voor de lokale server.")
+    args = parser.parse_args()
+
+    server = ThreadingHTTPServer((args.host, args.port), Handler)
+    print(f"Server gestart op http://{args.host}:{args.port}")
+    print(f"Open: http://{args.host}:{args.port}/index.html")
     server.serve_forever()
 
 

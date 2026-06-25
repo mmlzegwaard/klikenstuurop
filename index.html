@@ -171,7 +171,7 @@
         <p>Elke keer dat je op de knop klikt, wordt het bericht hieronder bijgewerkt.</p>
         <p id="klikResultaat" class="click-result">Nog niet geklikt.</p>
         <div class="actions">
-          <button class="button button-secondary" id="keyKnop" type="button">key</button>
+          <button class="button button-secondary" id="keyKnop" type="button">API key ophalen</button>
         </div>
         <p id="keyResultaat" class="key-result">Nog geen API key opgehaald.</p>
       </section>
@@ -213,9 +213,17 @@
       keyKnop.disabled = true;
       try {
         const response = await fetch('/api/key');
-        const payload = await response.json();
+        let payload = {};
+        try {
+          payload = await response.json();
+        } catch (_error) {
+          payload = {};
+        }
         if (!response.ok) {
           throw new Error(payload.error || 'Onbekende fout');
+        }
+        if (!payload.api_key) {
+          throw new Error('Geen API key in response.');
         }
         keyResultaat.textContent = `API key: ${payload.api_key}`;
       } catch (error) {
