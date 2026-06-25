@@ -59,6 +59,16 @@
       margin-bottom: 14px;
     }
 
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
     input {
       width: 100%;
       background: var(--panel);
@@ -113,7 +123,10 @@
     <p>Vul een endpoint in en klik op <strong>Data ophalen</strong> om JSON-data op te vragen met een GET-request.</p>
 
     <div class="controls">
-      <input id="apiUrl" type="url" value="https://api.hortosridder.nl" aria-label="API URL">
+      <div class="field">
+        <label for="apiUrl">API URL</label>
+        <input id="apiUrl" type="url" value="https://api.hortosridder.nl" aria-label="API URL">
+      </div>
       <button id="loadButton" type="button">Data ophalen</button>
     </div>
 
@@ -141,6 +154,12 @@
         endpoint = new URL(rawValue).toString();
       } catch {
         statusEl.textContent = "De ingevulde URL is ongeldig.";
+        statusEl.className = "status error";
+        return;
+      }
+
+      if (!endpoint.startsWith("http://") && !endpoint.startsWith("https://")) {
+        statusEl.textContent = "Gebruik een URL die met http:// of https:// begint.";
         statusEl.className = "status error";
         return;
       }
