@@ -26,59 +26,69 @@ def main():
 
     try:
         from playwright.sync_api import sync_playwright
-    except Exception:
+    except ImportError:
         print("Playwright is not installed. Install with: pip install playwright && playwright install", file=sys.stderr)
         return 3
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=not args.headful)
-        page = browser.new_page()
-        page.goto(args.url, wait_until="domcontentloaded")
+        try:
+            page = browser.new_page()
+            page.goto(args.url, wait_until="domcontentloaded")
 
-        user_selector = first_selector(
-            page,
-            [
-                'input[type="email"]',
-                'input[name="email"]',
-                'input[name="username"]',
-                'input[id*="email"]',
-                'input[id*="user"]',
-            ],
-        )
-        pass_selector = first_selector(
-            page,
-            [
-                'input[type="password"]',
-                'input[name="password"]',
-                'input[id*="password"]',
-            ],
-        )
-        submit_selector = first_selector(
-            page,
-            [
-                'button[type="submit"]',
-                'input[type="submit"]',
-                'button:has-text("Login")',
-                'button:has-text("Sign in")',
-            ],
-        )
+            user_selector = first_selector(
+                page,
+                [
+                    'input[type="email"]',
+                    'input[name="email"]',
+                    'input[name="username"]',
+                    'input[id*="email"]',
+                    'input[id*="user"]',
+                ],
+            )
+            pass_selector = first_selector(
+                page,
+                [
+                    'input[type="password"]',
+                    'input[name="password"]',
+                    'input[id*="password"]',
+                ],
+            )
+            submit_selector = first_selector(
+                page,
+                [
+                    'button[type="submit"]',
+                    'input[type="submit"]',
+                    'button:has-text("Login")',
+                    'button:has-text("Sign in")',
+                ],
+            )
 
-        if not user_selector or not pass_selector or not submit_selector:
-            print("Could not find login form fields/buttons on the page.", file=sys.stderr)
+            if not user_selector or not pass_selector or not submit_selector:
+                print("Could not find login form fields/buttons on the page.", file=sys.stderr)
+                return 4
+
+            login_url_before_submit = page.url
+            page.fill(user_selector, args.username)
+            page.fill(pass_selector, args.password)
+            page.click(submit_selector)
+            page.wait_for_load_state("networkidle")
+
+            still_on_login = (
+                page.url == login_url_before_submit
+                and page.locator('input[type="password"]').count() > 0
+            )
+            if still_on_login:
+                print("Login may have failed: still on the login page after submit.", file=sys.stderr)
+                return 5
+
+            if args.screenshot:
+                page.screenshot(path=args.screenshot, full_page=True)
+
+            print(f"Current URL: {page.url}")
+            print(f"Page title: {page.title()}")
+        finally:
             browser.close()
-            return 4
-
-        page.fill(user_selector, args.username)
-        page.fill(pass_selector, args.password)
-        page.click(submit_selector)
-        page.wait_for_load_state("networkidle")
-
-        if args.screenshot:
-            page.screenshot(path=args.screenshot, full_page=True)
-
-        print(f"Current URL: {page.url}")
-        print(f"Page title: {page.title()}")
-        browser.close()
     return 0
 
 
