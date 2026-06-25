@@ -64,8 +64,11 @@
       display: inline-block;
       padding: 14px 22px;
       border-radius: 10px;
+      border: none;
       text-decoration: none;
       font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
       transition: 0.2s ease;
     }
 
@@ -76,6 +79,10 @@
 
     .button-primary:hover {
       background: var(--accent-dark);
+    }
+
+    .button-primary:active {
+      transform: translateY(1px);
     }
 
     .button-secondary {
@@ -94,6 +101,32 @@
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
       margin: 48px 0 72px;
+    }
+
+    .click-panel {
+      max-width: 640px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+
+    .click-result {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 1rem;
+      min-height: 24px;
+    }
+
+    .key-result {
+      margin-top: 12px;
+      font-family: Consolas, Monaco, monospace;
+      word-break: break-all;
+      color: var(--text);
+      min-height: 24px;
+    }
+
+    .copy-button {
+      margin-top: 10px;
+      display: none;
     }
 
     .card {
@@ -128,16 +161,27 @@
     <header>
       <h1>Klik en Stuur</h1>
       <p class="subtitle">
-        Welkom op de homepage van Klik en Stuur. Hier kun je eenvoudig informatie delen,
-        jouw dienst presenteren en bezoekers uitnodigen om contact op te nemen.
+        Welkom op de homepage van Klik en Stuur. Klik op de knop en zie direct een reactie
+        op het scherm verschijnen.
       </p>
       <div class="actions">
-        <a class="button button-primary" href="#meer">Meer informatie</a>
+        <button class="button button-primary" id="klikKnop" type="button">Klik hier</button>
         <a class="button button-secondary" href="https://github.com/mmlzegwaard/klikenstuurop">Bekijk de repository</a>
       </div>
     </header>
 
     <main>
+      <section class="card click-panel" aria-live="polite">
+        <h2>Interactieve knop</h2>
+        <p>Elke keer dat je op de knop klikt, wordt het bericht hieronder bijgewerkt.</p>
+        <p id="klikResultaat" class="click-result">Nog niet geklikt.</p>
+        <div class="actions">
+          <button class="button button-secondary" id="keyKnop" type="button">API key ophalen</button>
+        </div>
+        <p id="keyResultaat" class="key-result">Nog geen API key opgehaald.</p>
+        <button class="button button-secondary copy-button" id="kopieerKeyKnop" type="button">Kopieer key</button>
+      </section>
+
       <section id="meer" class="grid">
         <article class="card">
           <h2>Snel</h2>
@@ -158,5 +202,67 @@
       © 2026 Klik en Stuur
     </footer>
   </div>
+  <script>
+    const klikKnop = document.getElementById('klikKnop');
+    const klikResultaat = document.getElementById('klikResultaat');
+    const keyKnop = document.getElementById('keyKnop');
+    const keyResultaat = document.getElementById('keyResultaat');
+    const kopieerKeyKnop = document.getElementById('kopieerKeyKnop');
+    let aantalKlikken = 0;
+    let apiKey = '';
+
+    function maskerKey(waarde) {
+      if (waarde.length <= 8) {
+        return '********';
+      }
+      return `${waarde.slice(0, 4)}...${waarde.slice(-4)}`;
+    }
+
+    klikKnop.addEventListener('click', () => {
+      aantalKlikken += 1;
+      klikResultaat.textContent = `Je hebt ${aantalKlikken} keer op de knop geklikt.`;
+    });
+
+    keyKnop.addEventListener('click', async () => {
+      keyResultaat.textContent = 'API key ophalen...';
+      keyKnop.disabled = true;
+      try {
+        const response = await fetch('/api/key');
+        let payload = {};
+        try {
+          payload = await response.json();
+        } catch {
+          payload = {};
+        }
+        if (!response.ok) {
+          throw new Error(payload.error || 'Onbekende fout');
+        }
+        if (!payload.api_key) {
+          throw new Error('Geen API key in response.');
+        }
+        apiKey = payload.api_key;
+        keyResultaat.textContent = `API key opgehaald: ${maskerKey(apiKey)}`;
+        kopieerKeyKnop.style.display = 'inline-block';
+      } catch (error) {
+        keyResultaat.textContent = `Fout: ${error.message}`;
+        apiKey = '';
+        kopieerKeyKnop.style.display = 'none';
+      } finally {
+        keyKnop.disabled = false;
+      }
+    });
+
+    kopieerKeyKnop.addEventListener('click', async () => {
+      if (!apiKey) {
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(apiKey);
+        keyResultaat.textContent = `API key gekopieerd: ${maskerKey(apiKey)}`;
+      } catch (error) {
+        keyResultaat.textContent = 'Kopiëren mislukt.';
+      }
+    });
+  </script>
 </body>
 </html>
