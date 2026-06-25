@@ -124,6 +124,11 @@
       min-height: 24px;
     }
 
+    .copy-button {
+      margin-top: 10px;
+      display: none;
+    }
+
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -174,6 +179,7 @@
           <button class="button button-secondary" id="keyKnop" type="button">API key ophalen</button>
         </div>
         <p id="keyResultaat" class="key-result">Nog geen API key opgehaald.</p>
+        <button class="button button-secondary copy-button" id="kopieerKeyKnop" type="button">Kopieer key</button>
       </section>
 
       <section id="meer" class="grid">
@@ -201,7 +207,16 @@
     const klikResultaat = document.getElementById('klikResultaat');
     const keyKnop = document.getElementById('keyKnop');
     const keyResultaat = document.getElementById('keyResultaat');
+    const kopieerKeyKnop = document.getElementById('kopieerKeyKnop');
     let aantalKlikken = 0;
+    let apiKey = '';
+
+    function maskerKey(waarde) {
+      if (waarde.length <= 8) {
+        return '********';
+      }
+      return `${waarde.slice(0, 4)}...${waarde.slice(-4)}`;
+    }
 
     klikKnop.addEventListener('click', () => {
       aantalKlikken += 1;
@@ -225,11 +240,27 @@
         if (!payload.api_key) {
           throw new Error('Geen API key in response.');
         }
-        keyResultaat.textContent = `API key: ${payload.api_key}`;
+        apiKey = payload.api_key;
+        keyResultaat.textContent = `API key opgehaald: ${maskerKey(apiKey)}`;
+        kopieerKeyKnop.style.display = 'inline-block';
       } catch (error) {
         keyResultaat.textContent = `Fout: ${error.message}`;
+        apiKey = '';
+        kopieerKeyKnop.style.display = 'none';
       } finally {
         keyKnop.disabled = false;
+      }
+    });
+
+    kopieerKeyKnop.addEventListener('click', async () => {
+      if (!apiKey) {
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(apiKey);
+        keyResultaat.textContent = `API key gekopieerd: ${maskerKey(apiKey)}`;
+      } catch (error) {
+        keyResultaat.textContent = 'Kopiëren mislukt.';
       }
     });
   </script>

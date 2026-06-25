@@ -47,6 +47,8 @@ def fetch_api_key(credentials):
     base_url = credentials["base_url"].rstrip("/")
     auth_url = urllib.parse.urljoin(f"{base_url}/", credentials["auth_endpoint"].lstrip("/"))
     key_url = urllib.parse.urljoin(f"{base_url}/", credentials["key_endpoint"].lstrip("/"))
+    timeout_seconds = float(credentials.get("timeout_seconds", 10))
+    timeout_seconds = max(1.0, min(timeout_seconds, 30.0))
 
     auth_payload = {
         "username": credentials["username"],
@@ -59,7 +61,7 @@ def fetch_api_key(credentials):
         method="POST",
     )
 
-    with urllib.request.urlopen(auth_request, timeout=20) as response:
+    with urllib.request.urlopen(auth_request, timeout=timeout_seconds) as response:
         auth_data = read_json_body(response)
 
     token_field = credentials.get("access_token_field", "access_token")
@@ -74,7 +76,7 @@ def fetch_api_key(credentials):
         headers={"Authorization": "Bearer " + token, "Accept": "application/json"},
         method="GET",
     )
-    with urllib.request.urlopen(key_request, timeout=20) as response:
+    with urllib.request.urlopen(key_request, timeout=timeout_seconds) as response:
         key_data = read_json_body(response)
 
     api_key_field = credentials.get("api_key_field", "api_key")
@@ -99,10 +101,9 @@ class Handler(SimpleHTTPRequestHandler):
             api_key = fetch_api_key(credentials)
             return json_response(self, {"api_key": api_key}, status=200)
         except urllib.error.HTTPError as exc:
-            details = exc.read().decode("utf-8", errors="replace")
             return json_response(
                 self,
-                {"error": f"Hortos request mislukt ({exc.code}).", "details": details},
+                {"error": f"Hortos request mislukt ({exc.code})."},
                 status=502,
             )
         except urllib.error.URLError as exc:

@@ -10,4 +10,4 @@ Website to klik en verstuur
    ```bash
    python hortos_key_server.py
    ```
-4. Open `http://127.0.0.1:8000/index.html` en klik op knop **key**.
+4. Open `http://127.0.0.1:8000/index.html` en klik op knop **API key ophalen**.
