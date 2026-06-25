@@ -13,9 +13,9 @@ def first_selector(page, selectors):
 
 def main():
     parser = argparse.ArgumentParser(description="Log in to a HortOS page with Playwright.")
-    parser.add_argument("--url", default="https://hortos.ridder.com/login")
-    parser.add_argument("--username", default=os.getenv("HORTOS_USERNAME"))
-    parser.add_argument("--password", default=os.getenv("HORTOS_PASSWORD"))
+    parser.add_argument("--url", default="https://hortos.ridder.com/login", help="Login page URL.")
+    parser.add_argument("--username", default=os.getenv("HORTOS_USERNAME"), help="Username/email (or HORTOS_USERNAME).")
+    parser.add_argument("--password", default=os.getenv("HORTOS_PASSWORD"), help="Password (or HORTOS_PASSWORD).")
     parser.add_argument("--headful", action="store_true", help="Run with a visible browser window.")
     parser.add_argument("--screenshot", help="Save a screenshot after login.")
     args = parser.parse_args()
@@ -86,7 +86,7 @@ def main():
 
             still_on_login = (
                 page.url == login_url_before_submit
-                and page.locator('input[type="password"]').count() > 0
+                and page.locator(pass_selector).count() > 0
             )
             if still_on_login:
                 print("Login may have failed: still on the login page after submit.", file=sys.stderr)
