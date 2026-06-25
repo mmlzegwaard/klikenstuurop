@@ -25,6 +25,8 @@ def main():
         return 2
 
     try:
+        from playwright.sync_api import Error as PlaywrightError
+        from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
         from playwright.sync_api import sync_playwright
     except ImportError:
         print("Playwright is not installed. Install with: pip install playwright && playwright install", file=sys.stderr)
@@ -34,7 +36,11 @@ def main():
         browser = p.chromium.launch(headless=not args.headful)
         try:
             page = browser.new_page()
-            page.goto(args.url, wait_until="domcontentloaded")
+            try:
+                page.goto(args.url, wait_until="domcontentloaded")
+            except (PlaywrightError, PlaywrightTimeoutError) as exc:
+                print(f"Failed to open URL '{args.url}': {exc}", file=sys.stderr)
+                return 6
 
             user_selector = first_selector(
                 page,
@@ -69,10 +75,14 @@ def main():
                 return 4
 
             login_url_before_submit = page.url
-            page.fill(user_selector, args.username)
-            page.fill(pass_selector, args.password)
-            page.click(submit_selector)
-            page.wait_for_load_state("networkidle")
+            try:
+                page.fill(user_selector, args.username)
+                page.fill(pass_selector, args.password)
+                page.click(submit_selector)
+                page.wait_for_load_state("networkidle")
+            except (PlaywrightError, PlaywrightTimeoutError) as exc:
+                print(f"Failed during login interaction: {exc}", file=sys.stderr)
+                return 7
 
             still_on_login = (
                 page.url == login_url_before_submit
@@ -83,7 +93,11 @@ def main():
                 return 5
 
             if args.screenshot:
-                page.screenshot(path=args.screenshot, full_page=True)
+                try:
+                    page.screenshot(path=args.screenshot, full_page=True)
+                except (PlaywrightError, PlaywrightTimeoutError) as exc:
+                    print(f"Failed to save screenshot '{args.screenshot}': {exc}", file=sys.stderr)
+                    return 8
 
             print(f"Current URL: {page.url}")
             print(f"Page title: {page.title()}")
