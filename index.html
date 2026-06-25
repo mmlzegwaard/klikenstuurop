@@ -116,6 +116,14 @@
       min-height: 24px;
     }
 
+    .key-result {
+      margin-top: 12px;
+      font-family: Consolas, Monaco, monospace;
+      word-break: break-all;
+      color: #0f172a;
+      min-height: 24px;
+    }
+
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -162,6 +170,10 @@
         <h2>Interactieve knop</h2>
         <p>Elke keer dat je op de knop klikt, wordt het bericht hieronder bijgewerkt.</p>
         <p id="klikResultaat" class="click-result">Nog niet geklikt.</p>
+        <div class="actions">
+          <button class="button button-secondary" id="keyKnop" type="button">key</button>
+        </div>
+        <p id="keyResultaat" class="key-result">Nog geen API key opgehaald.</p>
       </section>
 
       <section id="meer" class="grid">
@@ -187,11 +199,30 @@
   <script>
     const klikKnop = document.getElementById('klikKnop');
     const klikResultaat = document.getElementById('klikResultaat');
+    const keyKnop = document.getElementById('keyKnop');
+    const keyResultaat = document.getElementById('keyResultaat');
     let aantalKlikken = 0;
 
     klikKnop.addEventListener('click', () => {
       aantalKlikken += 1;
       klikResultaat.textContent = `Je hebt ${aantalKlikken} keer op de knop geklikt.`;
+    });
+
+    keyKnop.addEventListener('click', async () => {
+      keyResultaat.textContent = 'API key ophalen...';
+      keyKnop.disabled = true;
+      try {
+        const response = await fetch('/api/key');
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload.error || 'Onbekende fout');
+        }
+        keyResultaat.textContent = `API key: ${payload.api_key}`;
+      } catch (error) {
+        keyResultaat.textContent = `Fout: ${error.message}`;
+      } finally {
+        keyKnop.disabled = false;
+      }
     });
   </script>
 </body>
