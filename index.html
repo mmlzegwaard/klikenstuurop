@@ -113,7 +113,7 @@
     <p>Vul een endpoint in en klik op <strong>Data ophalen</strong> om JSON-data op te vragen met een GET-request.</p>
 
     <div class="controls">
-      <input id="apiUrl" type="url" value="https://api.hortosridder.nl/" aria-label="API URL">
+      <input id="apiUrl" type="url" value="https://api.hortosridder.nl" aria-label="API URL">
       <button id="loadButton" type="button">Data ophalen</button>
     </div>
 
@@ -128,10 +128,19 @@
     const resultEl = document.getElementById("result");
 
     async function fetchJson() {
-      const endpoint = urlInput.value.trim();
+      const rawValue = urlInput.value.trim();
 
-      if (!endpoint) {
+      if (!rawValue) {
         statusEl.textContent = "Vul eerst een geldige API-URL in.";
+        statusEl.className = "status error";
+        return;
+      }
+
+      let endpoint;
+      try {
+        endpoint = new URL(rawValue).toString();
+      } catch {
+        statusEl.textContent = "De ingevulde URL is ongeldig.";
         statusEl.className = "status error";
         return;
       }
@@ -143,6 +152,8 @@
       try {
         const response = await fetch(endpoint, {
           method: "GET",
+          mode: "cors",
+          credentials: "omit",
           headers: {
             "Accept": "application/json"
           }
